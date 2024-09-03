@@ -24,9 +24,7 @@ WORKDIR /home/$user
 # Install yay
 RUN git clone https://aur.archlinux.org/yay.git && \
   cd yay && \
-  makepkg -sri --needed --noconfirm && \
-  cd && \
-  rm -rf .cache yay
+  makepkg -sri --needed --noconfirm
 
 # Become root again and do rooty things
 USER root
@@ -36,4 +34,6 @@ RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 
 # Clean up cache
+WORKDIR /home/$user
 RUN yes | pacman -Scc
+RUN rm -rf .cache yay
